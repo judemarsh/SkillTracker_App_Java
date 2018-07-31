@@ -36,13 +36,13 @@ public class SkillController {
 	}
 	
 	@PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Long saveSkill(@RequestBody SkillTO workCategoryTO) {
-		return skillService.saveSkill(workCategoryTO);
+	public Long saveSkill(@RequestBody SkillTO skillTO) {
+		return skillService.saveSkill(skillTO);
 	}
 	
 	@PutMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Long updateSkill(@RequestBody SkillTO workCategoryTO) {
-		return skillService.saveSkill(workCategoryTO);
+	public Long updateSkill(@RequestBody SkillTO skillTO) {
+		return skillService.saveSkill(skillTO);
 	}
 	
 	@DeleteMapping(value = "/{skillId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

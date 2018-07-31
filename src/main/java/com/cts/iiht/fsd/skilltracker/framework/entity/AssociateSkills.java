@@ -33,6 +33,14 @@ public class AssociateSkills {
 		return associate;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public void setAssociate(Associate associate) {
 		this.associate = associate;
 	}

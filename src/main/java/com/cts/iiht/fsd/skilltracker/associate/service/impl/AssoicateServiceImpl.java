@@ -75,14 +75,14 @@ public class AssoicateServiceImpl implements AssociateService{
 					BigDecimal maleCount = new BigDecimal((BigInteger) candidatesByGender[1]);
 					BigDecimal malePercentage = new BigDecimal(0);
 					if(associatesCount != null && associatesCount.intValue() != 0) {
-						malePercentage = (maleCount.divide(associatesCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
+						malePercentage = (maleCount.divide(associatesCount)).multiply(percentObj);
 					}
 					associateTO.setMalePercentage(malePercentage.toString());
 				} else if(gender.equalsIgnoreCase("FEMALE")) {
 					BigDecimal femaleCount = new BigDecimal((BigInteger) candidatesByGender[1]);
 					BigDecimal femalePercentage = new BigDecimal(0);
 					if(associatesCount != null && associatesCount.intValue() != 0) {
-						femalePercentage = (femaleCount.divide(associatesCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
+						femalePercentage = (femaleCount.divide(associatesCount)).multiply(percentObj);
 					}
 					associateTO.setFemalePercentage(femalePercentage.toString());
 				}
@@ -96,7 +96,7 @@ public class AssoicateServiceImpl implements AssociateService{
 			BigDecimal freshersCount = new BigDecimal((BigInteger) freshersResult[0]);
 			BigDecimal freshersPercentage = new BigDecimal(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				freshersPercentage = (freshersCount.divide(associatesCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
+				freshersPercentage = (freshersCount.divide(associatesCount)).multiply(percentObj);
 			}
 			associateTO.setFreshersPercentage(freshersPercentage.toString());
 		} else {
@@ -121,8 +121,8 @@ public class AssoicateServiceImpl implements AssociateService{
 			}
 			totalCount = maleCount.add(femaleCount);
 			if(totalCount != null && totalCount.intValue() != 0) {
-				malePercentage = (maleCount.divide(totalCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
-				femalePercentage = (femaleCount.divide(totalCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
+				malePercentage = (maleCount.divide(totalCount)).multiply(percentObj);
+				femalePercentage = (femaleCount.divide(totalCount)).multiply(percentObj);
 			}
 			associateTO.setRatedAssociatesCount(totalCount.toString());
 			associateTO.setMaleRatedPercentage(malePercentage.toString());
@@ -137,7 +137,7 @@ public class AssoicateServiceImpl implements AssociateService{
 			BigDecimal level1Count = new BigDecimal((BigInteger) level1CandidatesResult[0]);
 			BigDecimal level1Percentage = new BigDecimal(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				level1Percentage = (level1Count.divide(associatesCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
+				level1Percentage = (level1Count.divide(associatesCount)).multiply(percentObj);
 			}
 			associateTO.setLevel1Percentage(level1Percentage.toString());
 		} else {
@@ -148,7 +148,7 @@ public class AssoicateServiceImpl implements AssociateService{
 			BigDecimal level2Count = new BigDecimal((BigInteger) level2CandidatesResult[0]);
 			BigDecimal level2Percentage = new BigDecimal(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				level2Percentage = (level2Count.divide(associatesCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
+				level2Percentage = (level2Count.divide(associatesCount)).multiply(percentObj);
 			}
 			associateTO.setLevel2Percentage(level2Percentage.toString());
 		} else {
@@ -159,7 +159,7 @@ public class AssoicateServiceImpl implements AssociateService{
 			BigDecimal level3Count = new BigDecimal((BigInteger) level3CandidatesResult[0]);
 			BigDecimal level3Percentage = new BigDecimal(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				level3Percentage = (level3Count.divide(associatesCount, 0, RoundingMode.HALF_UP)).multiply(percentObj);
+				level3Percentage = (level3Count.divide(associatesCount)).multiply(percentObj);
 			}
 			associateTO.setLevel3Percentage(level3Percentage.toString());
 		} else {
@@ -198,7 +198,7 @@ public class AssoicateServiceImpl implements AssociateService{
 			}
 			associateTO.setRemark(associateDtls.getRemark());
 			associateTO.setStrength(associateDtls.getStrength());
-			associateTO.setWeakness(associateDtls.getWeakeness());
+			associateTO.setWeakness(associateDtls.getWeakness());
 			List<Object[]> associateSkillsResult = associateRepository.getSkillsByAssociateId(associateDtls.getId());
 			List<AssociateSkillsTO> associateSkillsTOList = new ArrayList<AssociateSkillsTO>();
 			List<Skill> skillsList = skillRepository.findAll();
@@ -253,7 +253,7 @@ public class AssoicateServiceImpl implements AssociateService{
 		associate.setRemark(associateTO.getRemark());
 		associate.setGender(associateTO.getGender());
 		associate.setStrength(associateTO.getStrength());
-		associate.setWeakeness(associateTO.getWeakness());
+		associate.setWeakness(associateTO.getWeakness());
 		if(associateTO.getLevel().equalsIgnoreCase("LEVEL_1")) {
 			associate.setLevel1(true);
 			associate.setLevel2(false);

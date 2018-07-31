@@ -58,7 +58,7 @@ public class Associate {
 	private String strength;
 	
 	@Column(name="weakness",nullable=true)
-	private String weakeness;
+	private String weakness;
 	
 	@Column(name="gender",nullable=false)
 	private String gender;
@@ -178,12 +178,12 @@ public class Associate {
 		this.strength = strength;
 	}
 
-	public String getWeakeness() {
-		return weakeness;
+	public String getWeakness() {
+		return weakness;
 	}
 
-	public void setWeakeness(String weakeness) {
-		this.weakeness = weakeness;
+	public void setWeakness(String weakness) {
+		this.weakness = weakness;
 	}
 
 	public String getGender() {

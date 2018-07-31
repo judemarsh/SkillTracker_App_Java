@@ -34,17 +34,17 @@ public class AssociateController {
 	}
 	
 	@PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Long saveCategory(@RequestBody AssociateTO workCategoryTO) {
-		return associateService.saveAssociate(workCategoryTO);
+	public Long saveAssociate(@RequestBody AssociateTO associateTO) {
+		return associateService.saveAssociate(associateTO);
 	}
 	
 	@PutMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Long updateCategory(@RequestBody AssociateTO workCategoryTO) {
-		return associateService.saveAssociate(workCategoryTO);
+	public Long updateAssociate(@RequestBody AssociateTO associateTO) {
+		return associateService.saveAssociate(associateTO);
 	}
 	
 	@DeleteMapping(value = "/{associateId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public boolean deleteCategory(@PathVariable("associateId") Long associateId) {
+	public boolean deleteAssociate(@PathVariable("associateId") Long associateId) {
 		return associateService.deleteAssociate(associateId);
 	}
 	

@@ -80,7 +80,4 @@ public class SkillServiceImpl implements SkillService{
 		}
 		return true;
 	}
-
-	
-	
 }

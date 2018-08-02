@@ -2,7 +2,6 @@ package com.cts.iiht.fsd.skilltracker.associate.service.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,8 +62,8 @@ public class AssoicateServiceImpl implements AssociateService{
 				associatesList.add(associate);
 			}
 		}
-		BigDecimal associatesCount = new BigDecimal(associatesList.size());
-		BigDecimal percentObj = new BigDecimal(100);
+		Double associatesCount = new Double(associatesList.size());
+		Double percentObj = new Double(100);
 		List<Object[]> candidatesByGenderResult = associateRepository.getCandidatesCountByGender();
 		if(candidatesByGenderResult != null && !candidatesByGenderResult.isEmpty()) {
 			Iterator<Object[]> candidatesByGenderResultsItr = candidatesByGenderResult.iterator();
@@ -72,17 +71,17 @@ public class AssoicateServiceImpl implements AssociateService{
 				Object[] candidatesByGender = candidatesByGenderResultsItr.next();
 				String gender = (String) candidatesByGender[0];
 				if(gender.equalsIgnoreCase("MALE")) {
-					BigDecimal maleCount = new BigDecimal((BigInteger) candidatesByGender[1]);
-					BigDecimal malePercentage = new BigDecimal(0);
+					Double maleCount = new BigDecimal((BigInteger) candidatesByGender[1]).doubleValue();
+					Double malePercentage = new Double(0);
 					if(associatesCount != null && associatesCount.intValue() != 0) {
-						malePercentage = (maleCount.divide(associatesCount)).multiply(percentObj);
+						malePercentage = (maleCount/associatesCount) * percentObj;
 					}
 					associateTO.setMalePercentage(malePercentage.toString());
 				} else if(gender.equalsIgnoreCase("FEMALE")) {
-					BigDecimal femaleCount = new BigDecimal((BigInteger) candidatesByGender[1]);
-					BigDecimal femalePercentage = new BigDecimal(0);
+					Double femaleCount = new BigDecimal((BigInteger) candidatesByGender[1]).doubleValue();
+					Double femalePercentage = new Double(0);
 					if(associatesCount != null && associatesCount.intValue() != 0) {
-						femalePercentage = (femaleCount.divide(associatesCount)).multiply(percentObj);
+						femalePercentage = (femaleCount/associatesCount) *percentObj;
 					}
 					associateTO.setFemalePercentage(femalePercentage.toString());
 				}
@@ -93,10 +92,10 @@ public class AssoicateServiceImpl implements AssociateService{
 		}
 		Object[] freshersResult =  associateRepository.getFreshersCount();
 		if(freshersResult != null) {
-			BigDecimal freshersCount = new BigDecimal((BigInteger) freshersResult[0]);
-			BigDecimal freshersPercentage = new BigDecimal(0);
+			Double freshersCount = new BigDecimal((BigInteger) freshersResult[0]).doubleValue();
+			Double freshersPercentage = new Double(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				freshersPercentage = (freshersCount.divide(associatesCount)).multiply(percentObj);
+				freshersPercentage = (freshersCount/associatesCount) * percentObj;
 			}
 			associateTO.setFreshersPercentage(freshersPercentage.toString());
 		} else {
@@ -105,24 +104,24 @@ public class AssoicateServiceImpl implements AssociateService{
 		List<Object[]> ratedCandidatesByGenderResult = associateRepository.getRatedCandidatesByGender();
 		if(ratedCandidatesByGenderResult != null && !ratedCandidatesByGenderResult.isEmpty()) {
 			Iterator<Object[]> ratedCandidatesByGenderResultsItr = ratedCandidatesByGenderResult.iterator();
-			BigDecimal maleCount = new BigDecimal(0);
-			BigDecimal femaleCount = new BigDecimal(0);
-			BigDecimal totalCount = new BigDecimal(0);
-			BigDecimal malePercentage = new BigDecimal(0);
-			BigDecimal femalePercentage = new BigDecimal(0);
+			Double maleCount = new Double(0);
+			Double femaleCount = new Double(0);
+			Double totalCount = new Double(0);
+			Double malePercentage = new Double(0);
+			Double femalePercentage = new Double(0);
 			while(ratedCandidatesByGenderResultsItr.hasNext()) {
 				Object[] ratedCandidatesByGender = ratedCandidatesByGenderResultsItr.next();
 				String gender = (String) ratedCandidatesByGender[0];
 				if(gender.equalsIgnoreCase("MALE")) {
-					maleCount = new BigDecimal((BigInteger) ratedCandidatesByGender[1]);
+					maleCount = new BigDecimal((BigInteger) ratedCandidatesByGender[1]).doubleValue();
 				} else if(gender.equalsIgnoreCase("FEMALE")) {
-					femaleCount = new BigDecimal((BigInteger) ratedCandidatesByGender[1]);
+					femaleCount = new BigDecimal((BigInteger) ratedCandidatesByGender[1]).doubleValue();
 				}
 			}
-			totalCount = maleCount.add(femaleCount);
+			totalCount = maleCount + femaleCount;
 			if(totalCount != null && totalCount.intValue() != 0) {
-				malePercentage = (maleCount.divide(totalCount)).multiply(percentObj);
-				femalePercentage = (femaleCount.divide(totalCount)).multiply(percentObj);
+				malePercentage = (maleCount/totalCount) * percentObj;
+				femalePercentage = (femaleCount/totalCount) * percentObj;
 			}
 			associateTO.setRatedAssociatesCount(totalCount.toString());
 			associateTO.setMaleRatedPercentage(malePercentage.toString());
@@ -134,10 +133,10 @@ public class AssoicateServiceImpl implements AssociateService{
 		}
 		Object[] level1CandidatesResult =  associateRepository.getLevel1CandidatesCount();
 		if(level1CandidatesResult != null) {
-			BigDecimal level1Count = new BigDecimal((BigInteger) level1CandidatesResult[0]);
-			BigDecimal level1Percentage = new BigDecimal(0);
+			Double level1Count = new BigDecimal((BigInteger) level1CandidatesResult[0]).doubleValue();
+			Double level1Percentage = new Double(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				level1Percentage = (level1Count.divide(associatesCount)).multiply(percentObj);
+				level1Percentage = (level1Count/associatesCount) * percentObj;
 			}
 			associateTO.setLevel1Percentage(level1Percentage.toString());
 		} else {
@@ -145,10 +144,10 @@ public class AssoicateServiceImpl implements AssociateService{
 		}
 		Object[] level2CandidatesResult =  associateRepository.getLevel2CandidatesCount();
 		if(level2CandidatesResult != null) {
-			BigDecimal level2Count = new BigDecimal((BigInteger) level2CandidatesResult[0]);
-			BigDecimal level2Percentage = new BigDecimal(0);
+			Double level2Count = new BigDecimal((BigInteger) level2CandidatesResult[0]).doubleValue();
+			Double level2Percentage = new Double(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				level2Percentage = (level2Count.divide(associatesCount)).multiply(percentObj);
+				level2Percentage = (level2Count/associatesCount) * percentObj;
 			}
 			associateTO.setLevel2Percentage(level2Percentage.toString());
 		} else {
@@ -156,10 +155,10 @@ public class AssoicateServiceImpl implements AssociateService{
 		}
 		Object[] level3CandidatesResult =  associateRepository.getLevel3CandidatesCount();
 		if(level3CandidatesResult != null) {
-			BigDecimal level3Count = new BigDecimal((BigInteger) level3CandidatesResult[0]);
-			BigDecimal level3Percentage = new BigDecimal(0);
+			Double level3Count = new BigDecimal((BigInteger) level3CandidatesResult[0]).doubleValue();
+			Double level3Percentage = new Double(0);
 			if(associatesCount != null && associatesCount.intValue() != 0) {
-				level3Percentage = (level3Count.divide(associatesCount)).multiply(percentObj);
+				level3Percentage = (level3Count/associatesCount) * percentObj;
 			}
 			associateTO.setLevel3Percentage(level3Percentage.toString());
 		} else {

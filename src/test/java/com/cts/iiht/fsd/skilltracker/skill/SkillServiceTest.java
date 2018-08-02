@@ -58,6 +58,18 @@ public class SkillServiceTest {
 	}
 	
 	@Test
+	public void testGetAllSkills() throws Exception {
+		List<SkillTO> skillsTOList = new ArrayList<SkillTO>();
+		SkillTO skill1 = new SkillTO();
+		skill1.setSkillId(1L);
+		skill1.setSkillName("Skill 1");
+		skillsTOList.add(skill1);
+		when(skillRepository.findAll()).thenReturn(skillList);
+		List<SkillTO> skillTOObjList = skillService.getSkillsList();
+		assertNotNull(skillTOObjList);
+	}
+	
+	@Test
 	public void testGetSkillById() throws Exception {
 		when(skillRepository.findById(1L)).thenReturn(skillOptionalObj);
 		SkillTO skillTOObj = skillService.getSkillById(1L);
@@ -66,27 +78,11 @@ public class SkillServiceTest {
 	
 	@Test
 	public void testSaveSkill() throws Exception {
-		Skill newSkill = new Skill();
-		newSkill.setSkillId(null);
-		newSkill.setSkillName("Skill 1");
-		SkillTO newSkillTO = new SkillTO();
-		newSkillTO.setSkillId(null);
-		newSkillTO.setSkillName("Skill 1");
-		when(skillRepository.save(newSkill)).thenReturn(skill);
-		Long skillId = skillService.saveSkill(newSkillTO);
-		assertNotNull(skillId);
-	}
-	
-	@Test
-	public void testUpdateSkill() throws Exception {
-		Skill updateSkill = new Skill();
-		updateSkill.setSkillId(1L);
-		updateSkill.setSkillName("Updated Skill");
 		SkillTO updateSkillTO = new SkillTO();
 		updateSkillTO.setSkillId(1L);
 		updateSkillTO.setSkillName("Updated Skill");
 		when(skillRepository.findById(1L)).thenReturn(skillOptionalObj);
-		when(skillRepository.save(updateSkill)).thenReturn(skill);
+		when(skillRepository.save(skillOptionalObj.get())).thenReturn(skill);
 		Long skillId = skillService.saveSkill(updateSkillTO);
 		assertNotNull(skillId);
 	}
@@ -105,5 +101,7 @@ public class SkillServiceTest {
 		when(skillRepository.findById(1L)).thenReturn(skillOptionalObj);
 		doNothing().when(associateSkillsRepository).deleteAll(skill.getSkillsAssociatesSet());
 		doNothing().when(skillRepository).delete(skill);
+		boolean result = skillService.deleteSkill(1L);
+		assertNotNull(result);
 	}
 }

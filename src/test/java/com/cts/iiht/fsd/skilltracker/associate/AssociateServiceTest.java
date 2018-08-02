@@ -86,7 +86,7 @@ public class AssociateServiceTest {
 	}
 	
 	@Test
-	public void testGetAssociateById() throws Exception {
+	public void testGetLevel1BlueAssociateById() throws Exception {
 		Optional<Associate> associateOptionalObj = null;
 		Associate associateObj = new Associate();
 		associateObj.setId(100L);
@@ -125,56 +125,85 @@ public class AssociateServiceTest {
 	}
 	
 	@Test
-	public void testSaveAssociate() throws Exception {
+	public void testGetLevel2GreenAssociateById() throws Exception {
+		Optional<Associate> associateOptionalObj = null;
 		Associate associateObj = new Associate();
 		associateObj.setId(100L);
 		associateObj.setAssociateId(123L);
-		associateObj.setAssociateName("JUDE");
+		associateObj.setAssociateName("ABC");
 		associateObj.setEmail("jude@abc.in");
 		associateObj.setMobileNumber(9876543210L);
-		associateObj.setLevel1(true);
-		associateObj.setLevel2(false);
+		associateObj.setLevel1(false);
+		associateObj.setLevel2(true);
 		associateObj.setLevel3(false);
-		associateObj.setStatusBlue(true);
-		associateObj.setStatusGreen(false);
+		associateObj.setStatusBlue(false);
+		associateObj.setStatusGreen(true);
 		associateObj.setStatusRed(false);
-		associateObj.setGender("MALE");
+		associateObj.setGender("FEMALE");
 		associateObj.setRemark("Remark");
 		associateObj.setStrength("Strength");
 		associateObj.setWeakness("Weakness");
-		when(associateRepository.findById(100L)).thenReturn(Optional.empty());
-		doNothing().when(associateSkillsRepository).deleteAll(associateObj.getAssociateSkillsSet());
-		AssociateTO associateTOObj = new AssociateTO();
-		associateTOObj.setId(null);
-		associateTOObj.setAssociateId(123L);
-		associateTOObj.setAssociateName("JUDE");
-		associateTOObj.setEmail("jude@abc.in");
-		associateTOObj.setMobile(9876543210L);
-		associateTOObj.setLevel("LEVEL_1");
-		associateTOObj.setStatus("blue");
-		associateTOObj.setGender("Male");
-		associateTOObj.setRemark("Remark");
-		associateTOObj.setStrength("Strength");
-		associateTOObj.setWeakness("Weakness");
-		AssociateSkillsTO associateSkillTO = new AssociateSkillsTO();
-		associateSkillTO.setSkillId(1L);
-		associateSkillTO.setSkillLevel(10L);
-		List<AssociateSkillsTO> associateSkillsTOList = new ArrayList<AssociateSkillsTO>();
-		associateSkillsTOList.add(associateSkillTO);
-		associateTOObj.setAssociateSkillsList(associateSkillsTOList);
-		AssociateSkills associateSkill = new AssociateSkills();
-		associateSkill.setId(1000L);
-		associateSkill.setSkill(new Skill(1L));
-		associateSkill.setAssociate(associateObj);
-		associateSkill.setSkillLevel(10L);
-		when(associateRepository.save(associateObj)).thenReturn(associateObj);
-		when(associateSkillsRepository.save(associateSkill)).thenReturn(associateSkill);
-		Long associateId = associateService.saveAssociate(associateTOObj);
-		assertNotNull(associateId);
+		associateOptionalObj = Optional.of(associateObj);
+		when(associateRepository.findById(100L)).thenReturn(associateOptionalObj);
+		List<Object[]> associateSkillsResult = new ArrayList<Object[]>();
+		Object[] associateSkillObj =  new Object[] {new BigInteger("1"),"Skill 1", new BigInteger("10")};
+		associateSkillsResult.add(associateSkillObj);
+		when(associateRepository.getSkillsByAssociateId(100L)).thenReturn(associateSkillsResult);
+		List<Skill> skillsList = new ArrayList<Skill>();
+		Skill skill1 = new Skill();
+		skill1.setSkillId(1L);
+		skill1.setSkillName("Skill 1");
+		skillsList.add(skill1);
+		Skill skill2 = new Skill();
+		skill2.setSkillId(2L);
+		skill2.setSkillName("Skill 2");
+		skillsList.add(skill2);
+		when(skillRepository.findAll()).thenReturn(skillsList);
+		AssociateTO associateTOObj = associateService.getAssociateById(100L);
+		assertNotNull(associateTOObj);
 	}
-
+	
 	@Test
-	public void testUpdateAssociate() throws Exception {
+	public void testGetLevel3RedAssociateById() throws Exception {
+		Optional<Associate> associateOptionalObj = null;
+		Associate associateObj = new Associate();
+		associateObj.setId(100L);
+		associateObj.setAssociateId(123L);
+		associateObj.setAssociateName("ABC");
+		associateObj.setEmail("jude@abc.in");
+		associateObj.setMobileNumber(9876543210L);
+		associateObj.setLevel1(false);
+		associateObj.setLevel2(false);
+		associateObj.setLevel3(true);
+		associateObj.setStatusBlue(false);
+		associateObj.setStatusGreen(false);
+		associateObj.setStatusRed(true);
+		associateObj.setGender("FEMALE");
+		associateObj.setRemark("Remark");
+		associateObj.setStrength("Strength");
+		associateObj.setWeakness("Weakness");
+		associateOptionalObj = Optional.of(associateObj);
+		when(associateRepository.findById(100L)).thenReturn(associateOptionalObj);
+		List<Object[]> associateSkillsResult = new ArrayList<Object[]>();
+		Object[] associateSkillObj =  new Object[] {new BigInteger("1"),"Skill 1", new BigInteger("10")};
+		associateSkillsResult.add(associateSkillObj);
+		when(associateRepository.getSkillsByAssociateId(100L)).thenReturn(associateSkillsResult);
+		List<Skill> skillsList = new ArrayList<Skill>();
+		Skill skill1 = new Skill();
+		skill1.setSkillId(1L);
+		skill1.setSkillName("Skill 1");
+		skillsList.add(skill1);
+		Skill skill2 = new Skill();
+		skill2.setSkillId(2L);
+		skill2.setSkillName("Skill 2");
+		skillsList.add(skill2);
+		when(skillRepository.findAll()).thenReturn(skillsList);
+		AssociateTO associateTOObj = associateService.getAssociateById(100L);
+		assertNotNull(associateTOObj);
+	}
+	
+	@Test
+	public void testSaveLevel1BlueAssociate() throws Exception {
 		Optional<Associate> associateOptionalObj = null;
 		Associate associateObj = new Associate();
 		associateObj.setId(100L);
@@ -211,6 +240,114 @@ public class AssociateServiceTest {
 		associateTOObj.setMobile(9876543210L);
 		associateTOObj.setLevel("LEVEL_1");
 		associateTOObj.setStatus("blue");
+		associateTOObj.setGender("Male");
+		associateTOObj.setRemark("Remark");
+		associateTOObj.setStrength("Strength");
+		associateTOObj.setWeakness("Weakness");
+		AssociateSkillsTO associateSkillTO = new AssociateSkillsTO();
+		associateSkillTO.setSkillId(1L);
+		associateSkillTO.setSkillLevel(10L);
+		List<AssociateSkillsTO> associateSkillsTOList = new ArrayList<AssociateSkillsTO>();
+		associateSkillsTOList.add(associateSkillTO);
+		associateTOObj.setAssociateSkillsList(associateSkillsTOList);
+		when(associateRepository.save(associateObj)).thenReturn(associateObj);
+		when(associateSkillsRepository.save(associateSkill)).thenReturn(associateSkill);
+		Long associateId = associateService.saveAssociate(associateTOObj);
+		assertNotNull(associateId);
+	}
+	
+	@Test
+	public void testSaveLevel2GreenAssociate() throws Exception {
+		Optional<Associate> associateOptionalObj = null;
+		Associate associateObj = new Associate();
+		associateObj.setId(100L);
+		associateObj.setAssociateId(123L);
+		associateObj.setAssociateName("ABC");
+		associateObj.setEmail("jude@abc.in");
+		associateObj.setMobileNumber(9876543210L);
+		associateObj.setLevel1(false);
+		associateObj.setLevel2(true);
+		associateObj.setLevel3(false);
+		associateObj.setStatusBlue(false);
+		associateObj.setStatusGreen(true);
+		associateObj.setStatusRed(false);
+		associateObj.setGender("FEMALE");
+		associateObj.setRemark("Remark");
+		associateObj.setStrength("Strength");
+		associateObj.setWeakness("Weakness");
+		AssociateSkills associateSkill = new AssociateSkills();
+		associateSkill.setId(1000L);
+		associateSkill.setSkill(new Skill(1L));
+		associateSkill.setAssociate(associateObj);
+		associateSkill.setSkillLevel(10L);
+		Set<AssociateSkills> associateSkillSet = new HashSet<AssociateSkills>();
+		associateSkillSet.add(associateSkill);
+		associateObj.setAssociateSkillsSet(associateSkillSet);
+		associateOptionalObj = Optional.of(associateObj);
+		when(associateRepository.findById(100L)).thenReturn(associateOptionalObj);
+		doNothing().when(associateSkillsRepository).deleteAll(associateObj.getAssociateSkillsSet());
+		AssociateTO associateTOObj = new AssociateTO();
+		associateTOObj.setId(100L);
+		associateTOObj.setAssociateId(123L);
+		associateTOObj.setAssociateName("JUDE");
+		associateTOObj.setEmail("jude@abc.in");
+		associateTOObj.setMobile(9876543210L);
+		associateTOObj.setLevel("LEVEL_2");
+		associateTOObj.setStatus("green");
+		associateTOObj.setGender("Female");
+		associateTOObj.setRemark("Remark");
+		associateTOObj.setStrength("Strength");
+		associateTOObj.setWeakness("Weakness");
+		AssociateSkillsTO associateSkillTO = new AssociateSkillsTO();
+		associateSkillTO.setSkillId(1L);
+		associateSkillTO.setSkillLevel(10L);
+		List<AssociateSkillsTO> associateSkillsTOList = new ArrayList<AssociateSkillsTO>();
+		associateSkillsTOList.add(associateSkillTO);
+		associateTOObj.setAssociateSkillsList(associateSkillsTOList);
+		when(associateRepository.save(associateObj)).thenReturn(associateObj);
+		when(associateSkillsRepository.save(associateSkill)).thenReturn(associateSkill);
+		Long associateId = associateService.saveAssociate(associateTOObj);
+		assertNotNull(associateId);
+	}
+	
+	@Test
+	public void testSaveLevel3RedAssociate() throws Exception {
+		Optional<Associate> associateOptionalObj = null;
+		Associate associateObj = new Associate();
+		associateObj.setId(100L);
+		associateObj.setAssociateId(123L);
+		associateObj.setAssociateName("JUDE");
+		associateObj.setEmail("jude@abc.in");
+		associateObj.setMobileNumber(9876543210L);
+		associateObj.setLevel1(false);
+		associateObj.setLevel2(false);
+		associateObj.setLevel3(true);
+		associateObj.setStatusBlue(false);
+		associateObj.setStatusGreen(false);
+		associateObj.setStatusRed(true);
+		associateObj.setGender("MALE");
+		associateObj.setRemark("Remark");
+		associateObj.setStrength("Strength");
+		associateObj.setWeakness("Weakness");
+		AssociateSkills associateSkill = new AssociateSkills();
+		associateSkill.setId(1000L);
+		associateSkill.setSkill(new Skill(1L));
+		associateSkill.setAssociate(associateObj);
+		associateSkill.setSkillLevel(10L);
+		Set<AssociateSkills> associateSkillSet = new HashSet<AssociateSkills>();
+		associateSkillSet.add(associateSkill);
+		associateObj.setAssociateSkillsSet(associateSkillSet);
+		associateOptionalObj = Optional.of(associateObj);
+		when(associateRepository.findById(100L)).thenReturn(associateOptionalObj);
+		doNothing().when(associateSkillsRepository).deleteAll(associateObj.getAssociateSkillsSet());
+		AssociateTO associateTOObj = new AssociateTO();
+		associateTOObj.setId(100L);
+		associateTOObj.setAssociateId(123L);
+		associateTOObj.setAssociateName("JUDE");
+		associateTOObj.setEmail("jude@abc.in");
+		associateTOObj.setMobile(9876543210L);
+		associateTOObj.setLevel("LEVEL_3");
+		associateTOObj.setStatus("red");
 		associateTOObj.setGender("Male");
 		associateTOObj.setRemark("Remark");
 		associateTOObj.setStrength("Strength");
